@@ -63,7 +63,8 @@ function App() {
       } catch (err) {
         console.log("Transaction error: ", err);
       }
-
+    } else {
+      setValue(account.data.toString());
     }
   }
 
