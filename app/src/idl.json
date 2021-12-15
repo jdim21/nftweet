@@ -29,8 +29,18 @@
       ]
     },
     {
-      "name": "update",
+      "name": "updateAsHolder",
       "accounts": [
+        {
+          "name": "tokenAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "user",
+          "isMut": true,
+          "isSigner": false
+        },
         {
           "name": "baseAccount",
           "isMut": true,
@@ -43,17 +53,6 @@
           "type": "string"
         }
       ]
-    },
-    {
-      "name": "getTokenBal",
-      "accounts": [
-        {
-          "name": "tokenAccount",
-          "isMut": true,
-          "isSigner": false
-        }
-      ],
-      "args": []
     }
   ],
   "accounts": [
@@ -65,15 +64,16 @@
           {
             "name": "data",
             "type": "string"
-          },
-          {
-            "name": "dataList",
-            "type": {
-              "vec": "string"
-            }
           }
         ]
       }
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "Unauthorized",
+      "msg": "You must hold TODO in order to perform this action."
     }
   ],
   "metadata": {

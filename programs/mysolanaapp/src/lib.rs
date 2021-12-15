@@ -1,6 +1,5 @@
 use anchor_lang::prelude::*;
 use anchor_spl::{
-    // associated_token::AssociatedToken,
     token::{TokenAccount},
 };
 
@@ -14,7 +13,6 @@ mod mysolanaapp {
         let base_account = &mut ctx.accounts.base_account;
         let copy = data.clone();
         base_account.data = data;
-        base_account.data_list.push(copy);
         Ok(())
     }
 
@@ -25,9 +23,7 @@ mod mysolanaapp {
             return Err(ErrorCode::Unauthorized.into());
         }
         let base_account = &mut ctx.accounts.base_account;
-        let copy = data.clone();
         base_account.data = data;
-        base_account.data_list.push(copy);
         msg!("data: {}", base_account.data);
         msg!("getting token bal... {}", amt);
         Ok(())
@@ -69,7 +65,6 @@ pub struct UpdateAsHolder<'info> {
 #[account]
 pub struct BaseAccount {
     pub data: String,
-    pub data_list: Vec<String>,
 }
 
 #[error]

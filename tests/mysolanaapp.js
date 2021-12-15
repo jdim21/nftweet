@@ -80,8 +80,6 @@ describe("Mysolanaapp", () => {
       console.log('Updated data: ', account.data)
       assert.ok(account.data === "Some new data");
       console.log('all account data:', account)
-      console.log('All data: ', account.dataList);
-      assert.ok(account.dataList.length === 2);
     } catch (error) {
       assert.fail("Should not error: " + error);
     }
@@ -114,8 +112,6 @@ describe("Mysolanaapp", () => {
       console.log('Updated data: ', account.data)
       assert.ok(account.data === "Some 2nd new data");
       console.log('all account data:', account)
-      console.log('All data: ', account.dataList);
-      assert.ok(account.dataList.length === 3);
     } catch (error) {
       assert.fail("Should not error: " + error);
     }
