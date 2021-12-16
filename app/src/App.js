@@ -46,12 +46,7 @@ function App() {
   async function initialize() {    
     const provider = await getProvider();
     /* create the program interface combining the idl, program ID, and provider */
-    console.log("idl: " + JSON.stringify(idl));
-    console.log("programID: " + programID);
-    console.log("provider: " + provider.wallet.publicKey.toString());
-    console.log("baseAccount: " + baseAccount.publicKey.toString());
     const program = await new Program(idl, programID.toString(), provider);
-    console.log("program: " + program.programId);
     try {
       var account = await program.account.baseAccount.fetch(baseAccount.publicKey.toString());
 
@@ -83,7 +78,7 @@ function App() {
   async function update() {
     if (!input) return
     const provider = await getProvider();
-    const program = new Program(idl, programID, provider);
+    const program = new Program(idl, programID.toString(), provider);
     let tokenInfo = await provider.connection.getParsedTokenAccountsByOwner(
       provider.wallet.publicKey,
       {
@@ -104,14 +99,13 @@ function App() {
     if (hasValidToken) {
       await program.rpc.updateAsHolder(input, {
         accounts: {
-          // tokenAccount: userTokenAccount,
           tokenAccount: new PublicKey(currTokenAccount),
           user: provider.wallet.publicKey,
           baseAccount: baseAccount.publicKey
         },
       });
 
-      const account = await program.account.baseAccount.fetch(baseAccount.publicKey);
+      const account = await program.account.baseAccount.fetch(baseAccount.publicKey.toString());
       setValue(account.data.toString());
       setInput('');
     } else {
