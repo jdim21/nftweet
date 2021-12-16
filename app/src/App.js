@@ -1,6 +1,6 @@
 import './App.css';
 import { useState } from 'react';
-import { Connection, PublicKey } from '@solana/web3.js';
+import { clusterApiUrl, Connection, PublicKey } from '@solana/web3.js';
 import { Program, Provider, web3 } from '@project-serum/anchor';
 import idl from './idl.json';
 
@@ -8,8 +8,10 @@ import idl from './idl.json';
 import { getPhantomWallet } from '@solana/wallet-adapter-wallets';
 import { useWallet, WalletProvider, ConnectionProvider } from '@solana/wallet-adapter-react';
 import { WalletModalProvider, WalletMultiButton } from '@solana/wallet-adapter-react-ui';
+
 require('@solana/wallet-adapter-react-ui/styles.css');
 
+const network = clusterApiUrl('devnet');
 const bs58 = require('bs58');
 const secret = process.env.REACT_APP_DATAKEYPAIR;
 const secretArray = new Uint8Array(bs58.decode(secret));
@@ -45,7 +47,7 @@ function App() {
     const provider = await getProvider();
     /* create the program interface combining the idl, program ID, and provider */
     const program = new Program(idl, programID, provider);
-    console.log(program)
+    console.log(program);
     const account = await program.account.baseAccount.fetch(baseAccount.publicKey);
     console.log('account: ', account);
     if (!account.data) {
@@ -121,7 +123,7 @@ function App() {
 }
 
 const AppWithProvider = () => (
-  <ConnectionProvider endpoint="http://127.0.0.1:8899">
+  <ConnectionProvider endpoint={network}>
     <WalletProvider wallets={wallets} autoConnect>
       <WalletModalProvider>
         <App />
