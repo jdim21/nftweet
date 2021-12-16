@@ -53,7 +53,7 @@ function App() {
 
     } catch (err) {
       console.log("cant create acct: " + err);
-      var account = null; 
+      account = null; 
     }
     if (!account) {
       try {
