@@ -53,7 +53,7 @@ function App() {
     const program = await new Program(idl, programID.toString(), provider);
     console.log("program: " + program.programId);
     try {
-      var account = await program.account.baseAccount.fetch(baseAccount.publicKey);
+      var account = await program.account.baseAccount.fetch(baseAccount.publicKey.toString());
 
     } catch (err) {
       console.log("Cannot create acct: " + err);
