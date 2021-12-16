@@ -1,4 +1,4 @@
-[programs.localnet]
+[programs.devnet]
 mysolanaapp = "4FKLNRC1Gm57NjPmbNg6afBwWJoiNzgHLBv26mw2sFN8"
 
 [registry]
