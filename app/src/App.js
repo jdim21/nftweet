@@ -34,7 +34,7 @@ function App() {
   async function getProvider() {
     /* create the provider and return it to the caller */
     /* network set to local network for now */
-    const network = "http://127.0.0.1:8899";
+    // const network = "http://127.0.0.1:8899";
     const connection = new Connection(network, opts.preflightCommitment);
 
     const provider = new Provider(
@@ -48,9 +48,14 @@ function App() {
     /* create the program interface combining the idl, program ID, and provider */
     const program = new Program(idl, programID, provider);
     console.log(program);
-    const account = await program.account.baseAccount.fetch(baseAccount.publicKey);
-    console.log('account: ', account);
-    if (!account.data) {
+    try {
+      var account = await program.account.baseAccount.fetch(baseAccount.publicKey);
+
+    } catch (err) {
+      console.log("cant create acct: " + err);
+      var account = null; 
+    }
+    if (!account) {
       try {
         /* interact with the program via rpc */
         await program.rpc.initialize("Hello World", {
