@@ -17,7 +17,7 @@ const dataKeypair = web3.Keypair.fromSecretKey(secretArray);
 
 const wallets = [ getPhantomWallet() ]
 
-const { SystemProgram, Keypair } = web3;
+const { SystemProgram } = web3;
 const baseAccount = dataKeypair;
 const opts = {
   preflightCommitment: "processed"
@@ -72,7 +72,6 @@ function App() {
   async function update() {
     if (!input) return
     const provider = await getProvider();
-    const kp = provider.wallet.publicKey;
     const program = new Program(idl, programID, provider);
     await program.rpc.updateAsHolder(input, {
       accounts: {
