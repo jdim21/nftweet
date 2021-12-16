@@ -11,6 +11,7 @@ import { WalletModalProvider, WalletMultiButton } from '@solana/wallet-adapter-r
 
 require('@solana/wallet-adapter-react-ui/styles.css');
 
+const TOKEN_PROGRAM_ID = "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA";
 const network = clusterApiUrl('devnet');
 const bs58 = require('bs58');
 const secret = process.env.REACT_APP_DATAKEYPAIR;
@@ -34,7 +35,6 @@ function App() {
   async function getProvider() {
     /* create the provider and return it to the caller */
     /* network set to local network for now */
-    // const network = "http://127.0.0.1:8899";
     const connection = new Connection(network, opts.preflightCommitment);
 
     const provider = new Provider(
@@ -47,12 +47,11 @@ function App() {
     const provider = await getProvider();
     /* create the program interface combining the idl, program ID, and provider */
     const program = new Program(idl, programID, provider);
-    console.log(program);
     try {
       var account = await program.account.baseAccount.fetch(baseAccount.publicKey);
 
     } catch (err) {
-      console.log("cant create acct: " + err);
+      console.log("Cannot create acct: " + err);
       account = null; 
     }
     if (!account) {
@@ -80,18 +79,39 @@ function App() {
     if (!input) return
     const provider = await getProvider();
     const program = new Program(idl, programID, provider);
-    await program.rpc.updateAsHolder(input, {
-      accounts: {
-        tokenAccount: new PublicKey("CogUbKa4K3kmsLtthpPqUkswo2B4fLbH9ZVk5iQ9ytjY"),
-        user: provider.wallet.publicKey,
-        baseAccount: baseAccount.publicKey
+    let tokenInfo = await provider.connection.getParsedTokenAccountsByOwner(
+      provider.wallet.publicKey,
+      {
+        programId: new PublicKey(TOKEN_PROGRAM_ID),
       },
-    });
+    );   
+    let hasValidToken = false;
+    let currTokenAccount = "";
+    for (let i = 0; i < tokenInfo.value.length; i++) {
+      currTokenAccount = tokenInfo.value[i].pubkey.toString();
+      const currMint = tokenInfo.value[i].account?.data?.parsed?.info?.mint;
+      const currAmt = tokenInfo.value[i].account?.data?.parsed?.info?.tokenAmount?.uiAmount;
+      if (validTokens.includes(currMint) && currAmt >= 1) {
+        hasValidToken = true;
+        break;
+      }
+    }
+    if (hasValidToken) {
+      await program.rpc.updateAsHolder(input, {
+        accounts: {
+          // tokenAccount: userTokenAccount,
+          tokenAccount: new PublicKey(currTokenAccount),
+          user: provider.wallet.publicKey,
+          baseAccount: baseAccount.publicKey
+        },
+      });
 
-    const account = await program.account.baseAccount.fetch(baseAccount.publicKey);
-    console.log('account: ', account);
-    setValue(account.data.toString());
-    setInput('');
+      const account = await program.account.baseAccount.fetch(baseAccount.publicKey);
+      setValue(account.data.toString());
+      setInput('');
+    } else {
+      console.log("User does not hold a valid token to write data.");
+    }
   }
 
   if (!wallet.connected) {
@@ -136,5 +156,10 @@ const AppWithProvider = () => (
     </WalletProvider>
   </ConnectionProvider>
 )
+
+const validTokens = [
+  "teST8ZSPiHKifT6tvWhzQdSZz57NeaX7jaMkfGSwcyF",
+  "testGaCLrEdHAhBkN2V44igJc7RfEoz3A2S63pW1rzV"
+]
 
 export default AppWithProvider;  
