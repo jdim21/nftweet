@@ -46,7 +46,9 @@ function App() {
   async function initialize() {    
     const provider = await getProvider();
     /* create the program interface combining the idl, program ID, and provider */
+    console.log("idl: " + JSON.stringify(idl));
     console.log("programID: " + programID);
+    console.log("provider: " + provider.wallet.publicKey.toString());
     const program = new Program(idl, programID, provider);
     try {
       var account = await program.account.baseAccount.fetch(baseAccount.publicKey);
