@@ -99,7 +99,7 @@ function App() {
     if (hasValidToken) {
       await program.rpc.updateAsHolder(input, {
         accounts: {
-          tokenAccount: new PublicKey(currTokenAccount),
+          tokenAccount: currTokenAccount,
           user: provider.wallet.publicKey,
           baseAccount: baseAccount.publicKey
         },
