@@ -49,6 +49,7 @@ function App() {
     console.log("idl: " + JSON.stringify(idl));
     console.log("programID: " + programID);
     console.log("provider: " + provider.wallet.publicKey.toString());
+    console.log("baseAccount: " + baseAccount.publicKey.toString());
     const program = new Program(idl, programID, provider);
     try {
       var account = await program.account.baseAccount.fetch(baseAccount.publicKey);
