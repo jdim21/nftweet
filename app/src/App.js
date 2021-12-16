@@ -10,8 +10,11 @@ import { getPhantomWallet } from '@solana/wallet-adapter-wallets';
 import { useWallet, WalletProvider, ConnectionProvider } from '@solana/wallet-adapter-react';
 import { WalletModalProvider, WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 require('@solana/wallet-adapter-react-ui/styles.css');
-const secret = new Uint8Array(dataKp.dataKp);
-const dataKeypair = web3.Keypair.fromSecretKey(secret);
+
+const bs58 = require('bs58');
+const secret = process.env.REACT_APP_DATAKEYPAIR;
+const secretArray = new Uint8Array(bs58.decode(secret));
+const dataKeypair = web3.Keypair.fromSecretKey(secretArray);
 
 const wallets = [ getPhantomWallet() ]
 
@@ -24,7 +27,6 @@ const programID = new PublicKey(idl.metadata.address);
 
 function App() {
   const [value, setValue] = useState('');
-  // const [dataList, setDataList] = useState([]);
   const [input, setInput] = useState('');
   const wallet = useWallet()
 
