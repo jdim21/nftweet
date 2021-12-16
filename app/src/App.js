@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { Connection, PublicKey } from '@solana/web3.js';
 import { Program, Provider, web3 } from '@project-serum/anchor';
 import idl from './idl.json';
-import dataKp from './DATA8MS9xaNv9zVLWQUYfSZ6pLLdprV9hF6JA5NXEycw.json'
 
 
 import { getPhantomWallet } from '@solana/wallet-adapter-wallets';
