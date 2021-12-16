@@ -100,8 +100,8 @@ function App() {
       await program.rpc.updateAsHolder(input, {
         accounts: {
           tokenAccount: currTokenAccount,
-          user: provider.wallet.publicKey,
-          baseAccount: baseAccount.publicKey
+          user: provider.wallet.publicKey.toString(),
+          baseAccount: baseAccount.publicKey.toString()
         },
       });
 
